@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CheckCircle2, Clock3, ExternalLink, FileCheck2, XCircle } from "lucide-react";
@@ -9,12 +10,13 @@ import { serializeSubmissionReceipt } from "@/lib/submission-service";
 import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
+export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 const labels = {
   received: "Received",
   validating: "Validating",
   review: "Awaiting human review",
-  published: "Published",
+  published: "Approved",
   rejected: "Rejected",
 } as const;
 

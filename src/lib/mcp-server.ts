@@ -2,7 +2,7 @@ import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mc
 import { z } from "zod";
 import {
   categories,
-  PROTOCOL_VERSION,
+  REGISTRY_VERSION,
   submissionInputSchema,
   submissionJsonSchema,
   validateSubmission,
@@ -22,7 +22,7 @@ export function createOpenDirMcpServer(options?: { publicOrigin?: string }) {
   const server = new McpServer({
     name: "opendir-registry",
     title: "OpenDir Registry",
-    version: PROTOCOL_VERSION,
+    version: REGISTRY_VERSION,
   });
 
   server.registerTool(

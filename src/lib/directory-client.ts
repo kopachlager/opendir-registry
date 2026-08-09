@@ -25,7 +25,7 @@ export async function loadDirectoryProjects() {
       category: project.category,
       tags: project.tags,
       submittedBy: project.submitted_by,
-      status: "Published",
+      status: "Approved",
       updated: new Date(project.updated_at).toLocaleDateString(undefined, {
         month: "short",
         day: "numeric",

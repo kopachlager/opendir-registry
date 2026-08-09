@@ -3,7 +3,7 @@
   "name": "dev.opendir.registry/directory",
   "title": "OpenDir Registry",
   "description": "Validate, submit, track, and discover deployed software projects.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "remotes": [
     {
       "type": "streamable-http",

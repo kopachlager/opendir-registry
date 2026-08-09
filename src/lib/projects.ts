@@ -5,7 +5,7 @@ export type ProjectListing = {
   description: string;
   category: "AI & Agents" | "Developer Tools" | "Data" | "Infrastructure" | "Productivity" | "Open Source";
   submittedBy: string;
-  status: "Published" | "Review";
+  status: "Approved";
   updated: string;
   tags: string[];
 };

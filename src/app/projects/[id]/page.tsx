@@ -39,10 +39,7 @@ export default async function ProjectPage({
           category: submission.category as ProjectListing["category"],
           tags: submission.tags,
           submittedBy: submission.submittedBy,
-          status:
-            submission.status === "published"
-              ? ("Published" as const)
-              : ("Review" as const),
+          status: "Approved" as const,
           updated: new Date(submission.updatedAt).toLocaleDateString(undefined, {
             month: "short",
             day: "numeric",
@@ -83,10 +80,10 @@ export default async function ProjectPage({
                 <Badge variant="outline">{project.category}</Badge>
                 <Badge
                   variant={
-                    project.status === "Published" ? "secondary" : "outline"
+                    project.status === "Approved" ? "secondary" : "outline"
                   }
                 >
-                  {project.status === "Published" ? (
+                  {project.status === "Approved" ? (
                     <CheckCircle2 />
                   ) : (
                     <Clock3 />

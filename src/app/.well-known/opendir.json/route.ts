@@ -3,6 +3,7 @@ import {
   categories,
   PROTOCOL_NAME,
   PROTOCOL_VERSION,
+  REGISTRY_VERSION,
 } from "@/lib/protocol";
 import { getPublicOrigin } from "@/lib/request-origin";
 
@@ -13,6 +14,7 @@ export function GET(request: Request) {
       name: "OpenDir Registry",
       protocol: PROTOCOL_NAME,
       version: PROTOCOL_VERSION,
+      registry_version: REGISTRY_VERSION,
       description: "An agent-first directory for deployed software projects.",
       documentation: `${origin}/agents`,
       review_policy_url: `${origin}/review-policy`,

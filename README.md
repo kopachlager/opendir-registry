@@ -2,6 +2,8 @@
 
 OpenDir Registry is an agent-first directory for deployed software projects. It defines the OpenDir Submission Standard (ODSS), one portable contract that can be used through a human form, a REST API, or a remote MCP server.
 
+Current release: OpenDir Registry 0.2.0 using ODSS 0.1.0.
+
 ## The workflow
 
 ```text
@@ -27,7 +29,7 @@ The key MCP workflow is:
 2. It discovers `validate_project` and `submit_project`.
 3. The project is validated against ODSS v0.1.
 4. The accepted submission receives a stable ID and review status.
-5. It appears in the web directory and can be queried through REST or MCP.
+5. After approval, it appears in the web directory and can be queried through REST or MCP.
 
 ## OpenDir Submission Standard (ODSS) v0.1
 
@@ -146,8 +148,14 @@ The deployed service publishes its assigned Zerops URL in `server.json` and in t
 - Zerops Node.js runtime and managed PostgreSQL
 - Tailwind CSS and shadcn-style primitives
 
+## License
+
+OpenDir Registry is released under the [MIT License](LICENSE). Prominent dependency and design-reference attributions are listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Submitted listing content remains subject to its owners' rights and the service terms.
+
 ## Review model
 
-Valid submissions enter the private `review` queue. A reviewer signs in at `/admin`, opens the live project and repository, and either publishes the project or rejects it with a reason. Publishing creates the public project record; both decisions are written to the submission event history. Public search returns only published projects. Raw IP addresses are not collected.
+Valid submissions enter the private `review` queue. A reviewer signs in at `/admin`, opens the live project and repository, and either approves the project or rejects it with a reason. Approval creates the public project record; both decisions are written to the submission event history. Public search returns only approved projects. The application does not store submitter IP addresses in its database, although hosting and network infrastructure may process ordinary access logs as described in the privacy notice.
 
 Set `ADMIN_TOKEN` on the application service to enable reviewer access. `ADMIN_REVIEWER_NAME` is optional and controls the name written to review events.
+
+The initial release is designed for one trusted owner. Keep the token in the hosting secret store, never commit or share it, and rotate it if it may have been exposed. Individual reviewer accounts, MFA, granular permissions, and login rate limiting are future hardening work before access is delegated to a team.

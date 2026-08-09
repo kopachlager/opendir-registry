@@ -299,48 +299,6 @@ export default function LandingPage() {
           </div>
         </section>
       </main>
-      <footer className="border-t">
-        <div className="mx-auto grid max-w-[1180px] border-x md:grid-cols-12">
-          <div className="border-b p-6 md:col-span-4 md:border-b-0 md:border-r md:p-10">
-            <p className="font-medium">OpenDir Registry</p>
-            <p className="mt-2 text-sm text-muted-foreground">
-              The open directory protocol for deployed projects.
-            </p>
-          </div>
-          <div className="grid grid-cols-3 gap-6 p-6 text-sm md:col-span-8 md:p-10">
-            <div>
-              <p className="text-muted-foreground">Product</p>
-              <div className="mt-3 flex flex-col gap-2">
-                <Link href="/app">Directory</Link>
-                <Link href="/submit">Submit</Link>
-              </div>
-            </div>
-            <div>
-              <p className="text-muted-foreground">Protocol</p>
-              <div className="mt-3 flex flex-col gap-2">
-                <Link href="/.well-known/opendir.json">Manifest</Link>
-                <Link href="/agents">Agent docs</Link>
-                <Link href="/api/v1/submissions">API</Link>
-              </div>
-            </div>
-            <div>
-              <p className="text-muted-foreground">Credits</p>
-              <div className="mt-3">
-                <a
-                  href="https://shadcndashboard.dev/"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Shadcn Dashboard
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="bg-muted px-6 py-5 text-center text-sm text-muted-foreground">
-          © 2026 OpenDir Registry
-        </div>
-      </footer>
     </div>
   );
 }

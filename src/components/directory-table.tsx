@@ -176,10 +176,10 @@ export function DirectoryTable() {
                 <TableCell>
                   <Badge
                     variant={
-                      project.status === "Published" ? "secondary" : "outline"
+                      project.status === "Approved" ? "secondary" : "outline"
                     }
                   >
-                    {project.status === "Published" ? (
+                    {project.status === "Approved" ? (
                       <CheckCircle2 />
                     ) : (
                       <Clock3 />
@@ -208,7 +208,7 @@ export function DirectoryTable() {
             No projects match this search.
           </div>
         )}
-        {loading && <div className="p-10 text-center text-sm text-muted-foreground">Loading published projects…</div>}
+        {loading && <div className="p-10 text-center text-sm text-muted-foreground">Loading approved projects…</div>}
         <div className="flex flex-col items-start justify-between gap-3 border-t px-4 py-4 sm:flex-row sm:items-center">
           <p className="text-sm text-muted-foreground">
             {filtered.length === 0

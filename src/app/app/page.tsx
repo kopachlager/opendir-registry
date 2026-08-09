@@ -15,7 +15,7 @@ export const dynamic = "force-dynamic";
 export default async function DirectoryPage() {
   const counts = await getDirectoryStats();
   const stats = [
-    ["Published projects", counts.published, FolderOpen],
+    ["Approved projects", counts.published, FolderOpen],
     ["Total submissions", counts.submissions, Bot],
     ["Awaiting review", counts.awaitingReview, Clock3],
   ] as const;
@@ -40,7 +40,7 @@ export default async function DirectoryPage() {
           ))}
           <div id="submissions" className="col-span-12"><DirectoryTable /></div>
           <div className="col-span-12">
-            <DashboardCard className="gap-0"><CardHeader className="border-b py-4"><CardTitle className="flex items-center gap-2"><ShieldCheck className="size-4" />Protocol status</CardTitle><CardDescription>Public submission contract and available capabilities.</CardDescription></CardHeader><CardContent className="grid gap-4 py-4 sm:grid-cols-2 lg:grid-cols-4"><div><p className="text-sm text-muted-foreground">Endpoint</p><Badge className="mt-2" variant="secondary">Online</Badge></div><div><p className="text-sm text-muted-foreground">Version</p><p className="mt-2 font-mono text-sm">0.1</p></div><div><p className="text-sm text-muted-foreground">Review policy</p><Link href="/review-policy" className="mt-2 block text-sm underline underline-offset-4">Human review</Link></div><div><p className="text-sm text-muted-foreground">Capabilities</p><p className="mt-2 text-sm">Submit · Validate · Status · Search</p></div></CardContent></DashboardCard>
+            <DashboardCard className="gap-0"><CardHeader className="border-b py-4"><CardTitle className="flex items-center gap-2"><ShieldCheck className="size-4" />Protocol status</CardTitle><CardDescription>Public submission contract and available capabilities.</CardDescription></CardHeader><CardContent className="grid gap-4 py-4 sm:grid-cols-2 lg:grid-cols-4"><div><p className="text-sm text-muted-foreground">Endpoint</p><Badge className="mt-2" variant="secondary">Online</Badge></div><div><p className="text-sm text-muted-foreground">Versions</p><p className="mt-2 font-mono text-sm">Registry 0.2 · ODSS 0.1</p></div><div><p className="text-sm text-muted-foreground">Review policy</p><Link href="/review-policy" className="mt-2 block text-sm underline underline-offset-4">Human review</Link></div><div><p className="text-sm text-muted-foreground">Capabilities</p><p className="mt-2 text-sm">Submit · Validate · Status · Search</p></div></CardContent></DashboardCard>
           </div>
         </div>
       </main>

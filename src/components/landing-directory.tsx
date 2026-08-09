@@ -67,7 +67,7 @@ export function LandingDirectory() {
               <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-500 opacity-75" />
               <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
             </span>
-            <h2 className="text-xl font-medium">Latest published projects</h2>
+            <h2 className="text-xl font-medium">Latest approved projects</h2>
           </div>
           <p className="mt-1 text-sm text-muted-foreground">
             Search and filter projects approved for the public directory.
@@ -170,10 +170,10 @@ export function LandingDirectory() {
                 <TableCell className="py-3">
                   <Badge
                     variant={
-                      project.status === "Published" ? "secondary" : "outline"
+                      project.status === "Approved" ? "secondary" : "outline"
                     }
                   >
-                    {project.status === "Published" ? (
+                    {project.status === "Approved" ? (
                       <CheckCircle2 />
                     ) : (
                       <Clock3 />
@@ -193,11 +193,11 @@ export function LandingDirectory() {
             No projects match this search.
           </div>
         )}
-        {loading && <div className="p-10 text-center text-sm text-muted-foreground">Loading published projects…</div>}
+        {loading && <div className="p-10 text-center text-sm text-muted-foreground">Loading approved projects…</div>}
       </div>
       <div className="flex flex-col items-start justify-between gap-3 border-t px-5 py-4 sm:flex-row sm:items-center md:px-6">
         <p className="text-sm text-muted-foreground">
-          Showing {filtered.length} of {projects.length} published projects
+          Showing {filtered.length} of {projects.length} approved projects
         </p>
         <Link
           href="/app"

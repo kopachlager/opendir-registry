@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { AdminLogin } from "@/components/admin-login";
 import { AdminReviewQueue } from "@/components/admin-review-queue";
 import { SiteHeader } from "@/components/site-header";
@@ -6,6 +7,7 @@ import { serializeSubmission } from "@/lib/submission-service";
 import { listReviewSubmissions } from "@/lib/submissions";
 
 export const dynamic = "force-dynamic";
+export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 export default async function AdminPage() {
   const authenticated = await isAdminSession();

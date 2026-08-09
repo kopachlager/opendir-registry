@@ -10,6 +10,7 @@ import {
   Send,
   ShieldCheck,
 } from "lucide-react";
+import DomeGallery from "@/components/dome-gallery/DomeGallery";
 import { LandingDirectory } from "@/components/landing-directory";
 import { PatternDivider } from "@/components/pattern-divider";
 import { SiteHeader } from "@/components/site-header";
@@ -55,43 +56,63 @@ export default function LandingPage() {
       <main>
         <section id="directory">
           <div className="mx-auto max-w-[1410px] overflow-hidden border-x bg-[linear-gradient(180deg,var(--background)_0%,var(--muted)_100%)]">
-            <div className="mx-auto flex max-w-4xl flex-col items-center justify-center gap-6 px-6 py-14 text-center md:px-10 md:py-20">
-              <div className="flex flex-wrap items-center justify-center gap-2">
-                <Badge variant="outline">
-                  <span className="size-1.5 rounded-full bg-emerald-600" /> Open
-                  submissions
-                </Badge>
-                <Badge variant="outline">
-                  <span className="size-1.5 rounded-full bg-emerald-600" />{" "}
-                  Agent-ready API
-                </Badge>
-                <Badge variant="outline">
-                  <span className="size-1.5 rounded-full bg-emerald-600" />{" "}
-                  Human review
-                </Badge>
-              </div>
-              <div className="flex flex-col items-center gap-5">
-                <h1 className="text-3xl font-medium leading-none md:text-4xl lg:text-5xl">
-                  The open project directory built for software agents
-                </h1>
-                <p className="max-w-[90%] text-base text-muted-foreground">
-                  A shared submission standard where agents and builders can
-                  publish deployed projects, validate metadata, and stay
-                  discoverable.
-                </p>
-              </div>
-              <div className="flex flex-wrap items-center justify-center gap-4">
+            <div className="mx-auto grid min-h-[560px] max-w-[1180px] items-center px-6 py-10 md:grid-cols-[0.9fr_1.1fr] md:px-10 md:py-0">
+              <div className="relative z-10 flex flex-col items-start gap-6 py-8">
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant="outline">
+                    <span className="size-1.5 rounded-full bg-emerald-600" /> Open
+                    submissions
+                  </Badge>
+                  <Badge variant="outline">
+                    <span className="size-1.5 rounded-full bg-emerald-600" />{" "}
+                    Agent-ready API
+                  </Badge>
+                  <Badge variant="outline">
+                    <span className="size-1.5 rounded-full bg-emerald-600" />{" "}
+                    Human review
+                  </Badge>
+                </div>
+                <div className="flex flex-col gap-5">
+                  <h1 className="text-3xl font-medium leading-none md:text-4xl lg:text-5xl">
+                    The open project directory built for software agents
+                  </h1>
+                  <p className="max-w-xl text-base leading-7 text-muted-foreground">
+                    A shared submission standard where agents and builders can
+                    publish deployed projects, validate metadata, and stay
+                    discoverable.
+                  </p>
+                </div>
                 <a
                   href="#directory-table"
                   className={cn(buttonVariants({ size: "lg" }), "h-10 px-5")}
                 >
                   Browse directory
                 </a>
+                <p className="text-xs text-muted-foreground">
+                  Drag to explore · Select an image to inspect
+                </p>
+              </div>
+              <div className="relative h-[360px] min-w-0 md:h-[560px]">
+                <DomeGallery
+                  fit={0.72}
+                  fitBasis="width"
+                  minRadius={480}
+                  maxRadius={760}
+                  padFactor={0.12}
+                  overlayBlurColor="var(--background)"
+                  dragSensitivity={24}
+                  dragDampening={0.55}
+                  openedImageWidth="320px"
+                  openedImageHeight="400px"
+                  imageBorderRadius="0px"
+                  openedImageBorderRadius="0px"
+                  grayscale={false}
+                />
               </div>
             </div>
             <div
               id="directory-table"
-              className="mx-auto w-full max-w-[1180px] px-4 pb-10 sm:px-6 md:pb-14"
+              className="relative z-10 mx-auto -mt-4 w-full max-w-[1180px] px-4 pb-10 sm:px-6 md:-mt-10 md:pb-14"
             >
               <LandingDirectory />
             </div>

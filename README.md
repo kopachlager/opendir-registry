@@ -79,6 +79,8 @@ Resources:
 
 Human-readable integration instructions are available at `/agents`; the raw discovery contract remains at `/.well-known/opendir.json`.
 
+Product releases are recorded on the public `/changelog` page.
+
 The registry metadata draft is included in [`server.json`](server.json).
 
 ## REST API

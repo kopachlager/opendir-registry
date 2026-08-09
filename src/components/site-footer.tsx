@@ -3,7 +3,7 @@ import Link from "next/link";
 const groups = [
   {
     title: "Product",
-    links: [["Directory", "/app"], ["Submit", "/submit"], ["For agents", "/agents"]],
+    links: [["Directory", "/app"], ["Submit", "/submit"], ["For agents", "/agents"], ["Changelog", "/changelog"]],
   },
   {
     title: "Trust",

@@ -21,9 +21,9 @@ zerops:
       envVariables:
         NODE_ENV: production
         PORT: "3000"
-        DATABASE_URL: ${db_connectionString}
+        DATABASE_URL: ${db_connectionString}/${db_dbName}
       initCommands:
-        - node scripts/migrate.mjs
+        - zsc execOnce ${appVersionId} --retryUntilSuccessful -- node scripts/migrate.mjs
       start: node server.js
       healthCheck:
         httpGet:

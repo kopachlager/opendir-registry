@@ -73,6 +73,7 @@ Resources:
 
 - `opendir://spec/v0.1`
 - `opendir://categories`
+- `opendir://submissions/{submission_id}` — integrity and review receipt
 
 Human-readable integration instructions are available at `/agents`; the raw discovery contract remains at `/.well-known/opendir.json`.
 

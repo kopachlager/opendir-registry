@@ -1,7 +1,9 @@
 import { randomUUID } from "node:crypto";
+import { createHash } from "node:crypto";
 import { getDatabase, hasDatabase } from "@/lib/db";
 import {
   normalizeSubmittedBy,
+  PROTOCOL_VERSION,
   type SubmissionInput,
   type SubmissionStatus,
 } from "@/lib/protocol";
@@ -17,6 +19,8 @@ export type SubmissionRecord = {
   submittedBy: string;
   status: SubmissionStatus;
   validationErrors: unknown[];
+  metadataHash: string;
+  validatorVersion: string;
   reviewedBy?: string;
   reviewReason?: string;
   reviewedAt?: string;
@@ -51,8 +55,29 @@ export function normalizeProjectUrl(value: string) {
   return url.toString();
 }
 
+function metadataHash(input: {
+  name: string;
+  url: string;
+  description: string;
+  category: string;
+  tags: string[];
+  repositoryUrl?: string;
+  submittedBy: string;
+}) {
+  const canonicalMetadata = JSON.stringify({
+    name: input.name,
+    url: normalizeProjectUrl(input.url),
+    description: input.description,
+    category: input.category,
+    tags: [...input.tags].sort(),
+    repository_url: input.repositoryUrl ?? null,
+    submitted_by: input.submittedBy,
+  });
+  return createHash("sha256").update(canonicalMetadata).digest("hex");
+}
+
 function rowToSubmission(row: Record<string, unknown>): SubmissionRecord {
-  return {
+  const record = {
     id: String(row.id),
     name: String(row.name),
     url: String(row.url),
@@ -65,6 +90,9 @@ function rowToSubmission(row: Record<string, unknown>): SubmissionRecord {
     validationErrors: Array.isArray(row.validation_errors)
       ? row.validation_errors
       : [],
+    validatorVersion: row.validator_version
+      ? String(row.validator_version)
+      : PROTOCOL_VERSION,
     reviewedBy: row.reviewed_by ? String(row.reviewed_by) : undefined,
     reviewReason: row.review_reason ? String(row.review_reason) : undefined,
     reviewedAt: row.reviewed_at
@@ -72,6 +100,12 @@ function rowToSubmission(row: Record<string, unknown>): SubmissionRecord {
       : undefined,
     createdAt: new Date(String(row.created_at)).toISOString(),
     updatedAt: new Date(String(row.updated_at)).toISOString(),
+  };
+  return {
+    ...record,
+    metadataHash: row.metadata_hash
+      ? String(row.metadata_hash).trim()
+      : metadataHash(record),
   };
 }
 
@@ -81,6 +115,15 @@ export async function createSubmission(input: SubmissionInput) {
   const normalizedUrl = normalizeProjectUrl(input.url);
   const submittedBy = normalizeSubmittedBy(input.submitted_by);
   const repositoryUrl = input.repository_url;
+  const acceptedMetadataHash = metadataHash({
+    name: input.name,
+    url: input.url,
+    description: input.description,
+    category: input.category,
+    tags: input.tags,
+    repositoryUrl,
+    submittedBy,
+  });
   const sql = getDatabase();
 
   if (!sql) {
@@ -99,6 +142,8 @@ export async function createSubmission(input: SubmissionInput) {
       submittedBy,
       status: "review",
       validationErrors: [],
+      metadataHash: acceptedMetadataHash,
+      validatorVersion: PROTOCOL_VERSION,
       createdAt: now,
       updatedAt: now,
     };
@@ -111,11 +156,12 @@ export async function createSubmission(input: SubmissionInput) {
       const inserted = await transaction`
         INSERT INTO submissions (
           id, name, url, normalized_url, description, category, tags,
-          repository_url, submitted_by, status
+          repository_url, submitted_by, status, metadata_hash, validator_version
         ) VALUES (
           ${id}, ${input.name}, ${input.url}, ${normalizedUrl},
           ${input.description}, ${input.category}, ${input.tags},
-          ${repositoryUrl ?? null}, ${submittedBy}, 'review'
+          ${repositoryUrl ?? null}, ${submittedBy}, 'review',
+          ${acceptedMetadataHash}, ${PROTOCOL_VERSION}
         )
         RETURNING *
       `;

@@ -33,7 +33,7 @@ paths:
               $ref: ./opendir-submission.schema.json
       responses:
         "201":
-          description: Submission accepted with a stable ID, human status URL, API status URL, and review state
+          description: Submission accepted with stable URLs and an integrity receipt containing the metadata hash, validator version, review state, reviewer, rejection reason, and MCP resource URI
         "400":
           description: Validation failed
         "409":

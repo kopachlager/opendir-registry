@@ -1,4 +1,4 @@
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import {
   categories,
@@ -7,7 +7,7 @@ import {
   submissionJsonSchema,
   validateSubmission,
 } from "@/lib/protocol";
-import { serializeSubmission, submitProject } from "@/lib/submission-service";
+import { serializeSubmission, serializeSubmissionReceipt, submitProject } from "@/lib/submission-service";
 import { getSubmission, searchProjects } from "@/lib/submissions";
 
 function toolResult(value: unknown, isError = false) {
@@ -128,6 +128,34 @@ export function createOpenDirMcpServer(options?: { publicOrigin?: string }) {
         },
       ],
     }),
+  );
+
+  server.registerResource(
+    "opendir-submission-receipt",
+    new ResourceTemplate("opendir://submissions/{submission_id}", { list: undefined }),
+    {
+      title: "OpenDir submission receipt",
+      description: "Read the integrity and review receipt for a submitted project.",
+      mimeType: "application/json",
+    },
+    async (uri, { submission_id }) => {
+      const submission = await getSubmission(String(submission_id));
+      return {
+        contents: [
+          {
+            uri: uri.href,
+            mimeType: "application/json",
+            text: JSON.stringify(
+              submission
+                ? { receipt: serializeSubmissionReceipt(submission) }
+                : { error: "Submission not found.", code: "NOT_FOUND" },
+              null,
+              2,
+            ),
+          },
+        ],
+      };
+    },
   );
 
   return server;

@@ -21,6 +21,11 @@ export function GET(request: Request) {
       mcp: {
         transport: "streamable-http",
         endpoint: `${origin}/mcp`,
+        resources: [
+          "opendir://spec/v0.1",
+          "opendir://categories",
+          "opendir://submissions/{submission_id}",
+        ],
       },
       endpoints: {
         submit: `${origin}/api/v1/submissions`,

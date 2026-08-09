@@ -1,0 +1,3 @@
+ALTER TABLE submissions
+  ADD COLUMN IF NOT EXISTS metadata_hash CHAR(64),
+  ADD COLUMN IF NOT EXISTS validator_version VARCHAR(20) NOT NULL DEFAULT '0.1.0';

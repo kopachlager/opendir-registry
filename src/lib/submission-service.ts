@@ -33,10 +33,27 @@ export function serializeSubmission(record: SubmissionRecord) {
     submitted_by: record.submittedBy,
     status: record.status,
     validation_errors: record.validationErrors,
+    metadata_hash: record.metadataHash,
+    validator_version: record.validatorVersion,
+    reviewed_by: record.reviewedBy ?? null,
     review_reason: record.reviewReason,
     reviewed_at: record.reviewedAt,
     created_at: record.createdAt,
     updated_at: record.updatedAt,
+  };
+}
+
+export function serializeSubmissionReceipt(record: SubmissionRecord) {
+  return {
+    submission_id: record.id,
+    project_url: record.url,
+    metadata_hash: record.metadataHash,
+    validator_version: `odss/${record.validatorVersion}`,
+    review_state: record.status,
+    reviewer: record.reviewedBy ?? null,
+    rejection_reason:
+      record.status === "rejected" ? record.reviewReason ?? null : null,
+    mcp_resource_uri: `opendir://submissions/${record.id}`,
   };
 }
 
@@ -54,6 +71,7 @@ function serializeSubmissionResponse(
     status_url: publicOrigin ? `${publicOrigin}${pagePath}` : pagePath,
     api_status_url: publicOrigin ? `${publicOrigin}${apiPath}` : apiPath,
     storage,
+    receipt: serializeSubmissionReceipt(record),
     submission: serializeSubmission(record),
   };
 }

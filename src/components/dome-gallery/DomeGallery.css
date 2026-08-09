@@ -60,8 +60,17 @@
 .dg-image:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
 .dg-image img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; backface-visibility: hidden; filter: var(--dg-image-filter, none); }
 .dg-overlay, .dg-overlay-blur { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
-.dg-overlay { background-image: radial-gradient(transparent 55%, var(--dg-overlay-color, var(--background)) 100%); }
-.dg-overlay-blur { mask-image: radial-gradient(transparent 65%, black 92%); backdrop-filter: blur(3px); }
+.dg-overlay {
+  background-image:
+    linear-gradient(90deg, var(--dg-overlay-color, var(--background)) 0%, transparent 24%, transparent 76%, var(--dg-overlay-color, var(--background)) 100%),
+    radial-gradient(ellipse at center, transparent 42%, var(--dg-overlay-color, var(--background)) 96%);
+}
+.dg-overlay-blur {
+  mask-image:
+    linear-gradient(90deg, black 0%, transparent 28%, transparent 72%, black 100%),
+    radial-gradient(ellipse at center, transparent 52%, black 90%);
+  backdrop-filter: blur(5px);
+}
 
 .dg-edge { position: absolute; left: 0; right: 0; height: 80px; z-index: 5; pointer-events: none; background: linear-gradient(to bottom, transparent, var(--dg-overlay-color, var(--background))); }
 .dg-edge-top { top: 0; transform: rotate(180deg); }

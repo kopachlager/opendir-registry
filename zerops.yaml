@@ -22,6 +22,7 @@ zerops:
       envVariables:
         NODE_ENV: production
         PORT: "3000"
+        PUBLIC_APP_URL: ${zeropsSubdomain}
         DATABASE_URL: ${db_connectionString}/${db_dbName}
       initCommands:
         - zsc execOnce ${appVersionId} --retryUntilSuccessful -- node .next/migrate.bundle.mjs

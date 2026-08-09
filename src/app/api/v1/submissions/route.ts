@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { submitProject } from "@/lib/submission-service";
 import { listRecentSubmissions } from "@/lib/submissions";
 import { serializeSubmission } from "@/lib/submission-service";
+import { getPublicOrigin } from "@/lib/request-origin";
 
 export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
@@ -10,7 +11,7 @@ export async function POST(request: Request) {
 }
 
 export async function GET(request: Request) {
-  const origin = new URL(request.url).origin;
+  const origin = getPublicOrigin(request);
   const limit = Number.parseInt(new URL(request.url).searchParams.get("limit") ?? "20", 10);
   const submissions = await listRecentSubmissions(Number.isFinite(limit) ? limit : 20);
   return NextResponse.json({

@@ -4,9 +4,10 @@ import {
   PROTOCOL_NAME,
   PROTOCOL_VERSION,
 } from "@/lib/protocol";
+import { getPublicOrigin } from "@/lib/request-origin";
 
 export function GET(request: Request) {
-  const origin = new URL(request.url).origin;
+  const origin = getPublicOrigin(request);
   return NextResponse.json(
     {
       name: "OpenDir Registry",

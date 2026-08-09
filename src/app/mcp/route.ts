@@ -1,5 +1,6 @@
 import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js";
 import { createOpenDirMcpServer } from "@/lib/mcp-server";
+import { getPublicOrigin } from "@/lib/request-origin";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -7,7 +8,7 @@ export const dynamic = "force-dynamic";
 function originAllowed(request: Request) {
   const origin = request.headers.get("origin");
   if (!origin) return true;
-  const requestOrigin = new URL(request.url).origin;
+  const requestOrigin = getPublicOrigin(request);
   const configuredOrigin = process.env.PUBLIC_APP_URL;
   return origin === requestOrigin || origin === configuredOrigin;
 }
@@ -41,7 +42,7 @@ export const POST = handleMcpRequest;
 export const DELETE = handleMcpRequest;
 
 export function OPTIONS(request: Request) {
-  const origin = request.headers.get("origin") ?? new URL(request.url).origin;
+  const origin = request.headers.get("origin") ?? getPublicOrigin(request);
   return new Response(null, {
     status: 204,
     headers: {

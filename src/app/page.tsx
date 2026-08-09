@@ -87,15 +87,6 @@ export default function LandingPage() {
                 >
                   Browse directory
                 </a>
-                <Link
-                  href="/submit"
-                  className={cn(
-                    buttonVariants({ variant: "outline", size: "lg" }),
-                    "h-10 px-5",
-                  )}
-                >
-                  Submit project
-                </Link>
               </div>
             </div>
             <div

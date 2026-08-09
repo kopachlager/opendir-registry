@@ -1,16 +1,18 @@
 "use client";
 
+import Link from "next/link";
 import {
   ArrowDownUp,
+  ArrowUpRight,
   Bot,
   CheckCircle2,
   Clock3,
-  Ellipsis,
   FolderOpen,
   Search,
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { DashboardCard } from "@/components/dashboard-card";
+import { DirectoryPagination } from "@/components/directory-pagination";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -41,9 +43,12 @@ const categories = [
   "Open Source",
 ] as const;
 
+const pageSize = 8;
+
 export function DirectoryTable() {
   const [category, setCategory] = useState<(typeof categories)[number]>("All");
   const [query, setQuery] = useState("");
+  const [page, setPage] = useState(1);
   const filtered = useMemo(
     () =>
       projects.filter(
@@ -54,6 +59,11 @@ export function DirectoryTable() {
             .includes(query.toLowerCase()),
       ),
     [category, query],
+  );
+  const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize));
+  const visibleProjects = filtered.slice(
+    (page - 1) * pageSize,
+    page * pageSize,
   );
 
   return (
@@ -73,7 +83,10 @@ export function DirectoryTable() {
             <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               value={query}
-              onChange={(event) => setQuery(event.target.value)}
+              onChange={(event) => {
+                setQuery(event.target.value);
+                setPage(1);
+              }}
               className="pl-9"
               placeholder="Search projects and tags"
             />
@@ -85,7 +98,10 @@ export function DirectoryTable() {
               key={item}
               size="sm"
               variant={category === item ? "default" : "outline"}
-              onClick={() => setCategory(item)}
+              onClick={() => {
+                setCategory(item);
+                setPage(1);
+              }}
             >
               {item}
             </Button>
@@ -109,10 +125,15 @@ export function DirectoryTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filtered.map((project) => (
+            {visibleProjects.map((project) => (
               <TableRow key={project.id}>
                 <TableCell className="max-w-sm">
-                  <div className="font-medium">{project.name}</div>
+                  <Link
+                    href={`/projects/${project.id.toLowerCase()}`}
+                    className="font-medium hover:underline"
+                  >
+                    {project.name}
+                  </Link>
                   <div className="line-clamp-1 text-xs text-muted-foreground">
                     {project.id} · {project.description}
                   </div>
@@ -155,13 +176,13 @@ export function DirectoryTable() {
                   {project.updated}
                 </TableCell>
                 <TableCell>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    aria-label={`Actions for ${project.name}`}
+                  <Link
+                    href={`/projects/${project.id.toLowerCase()}`}
+                    className="inline-flex size-8 items-center justify-center hover:bg-muted"
+                    aria-label={`Open ${project.name} submission`}
                   >
-                    <Ellipsis />
-                  </Button>
+                    <ArrowUpRight className="size-4" />
+                  </Link>
                 </TableCell>
               </TableRow>
             ))}
@@ -172,6 +193,18 @@ export function DirectoryTable() {
             No projects match this search.
           </div>
         )}
+        <div className="flex flex-col items-start justify-between gap-3 border-t px-4 py-4 sm:flex-row sm:items-center">
+          <p className="text-sm text-muted-foreground">
+            {filtered.length === 0
+              ? "No submissions"
+              : `Showing ${(page - 1) * pageSize + 1}–${Math.min(page * pageSize, filtered.length)} of ${filtered.length}`}
+          </p>
+          <DirectoryPagination
+            page={page}
+            pageCount={pageCount}
+            onPageChange={setPage}
+          />
+        </div>
       </CardContent>
     </DashboardCard>
   );

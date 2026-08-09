@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowUpRight, Bot, CheckCircle2, Clock3, Search } from "lucide-react";
 import { useMemo, useState } from "react";
+import { DirectoryPagination } from "@/components/directory-pagination";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,9 +29,12 @@ const categories = [
   "Open Source",
 ] as const;
 
+const pageSize = 6;
+
 export function LandingDirectory() {
   const [category, setCategory] = useState<(typeof categories)[number]>("All");
   const [query, setQuery] = useState("");
+  const [page, setPage] = useState(1);
   const filtered = useMemo(
     () =>
       projects.filter(
@@ -41,6 +45,11 @@ export function LandingDirectory() {
             .includes(query.toLowerCase()),
       ),
     [category, query],
+  );
+  const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize));
+  const visibleProjects = filtered.slice(
+    (page - 1) * pageSize,
+    page * pageSize,
   );
 
   return (
@@ -62,7 +71,10 @@ export function LandingDirectory() {
           <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             value={query}
-            onChange={(event) => setQuery(event.target.value)}
+            onChange={(event) => {
+              setQuery(event.target.value);
+              setPage(1);
+            }}
             className="h-10 pl-9"
             placeholder="Search projects and tags"
           />
@@ -75,7 +87,10 @@ export function LandingDirectory() {
             size="sm"
             variant={category === item ? "default" : "ghost"}
             className="shrink-0"
-            onClick={() => setCategory(item)}
+            onClick={() => {
+              setCategory(item);
+              setPage(1);
+            }}
           >
             {item}
             <span className="text-xs opacity-60">
@@ -110,7 +125,7 @@ export function LandingDirectory() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filtered.map((project) => (
+            {visibleProjects.map((project) => (
               <TableRow key={project.id}>
                 <TableCell className="min-w-0 py-3 pl-5 md:pl-6">
                   <div className="flex items-center gap-3">
@@ -118,7 +133,12 @@ export function LandingDirectory() {
                       {project.name.slice(0, 1)}
                     </div>
                     <div className="min-w-0">
-                      <div className="font-medium">{project.name}</div>
+                      <Link
+                        href={`/projects/${project.id.toLowerCase()}`}
+                        className="font-medium hover:underline"
+                      >
+                        {project.name}
+                      </Link>
                       <div className="truncate text-xs text-muted-foreground">
                         {project.id} · {project.description}
                       </div>
@@ -174,16 +194,25 @@ export function LandingDirectory() {
           </div>
         )}
       </div>
-      <div className="flex flex-col items-start justify-between gap-3 border-t px-5 py-4 sm:flex-row sm:items-center md:px-6">
+      <div className="flex flex-col items-start justify-between gap-4 border-t px-5 py-4 md:flex-row md:items-center md:px-6">
         <p className="text-sm text-muted-foreground">
-          Showing {filtered.length} of {projects.length} latest submissions
+          {filtered.length === 0
+            ? "No submissions"
+            : `Showing ${(page - 1) * pageSize + 1}–${Math.min(page * pageSize, filtered.length)} of ${filtered.length}`}
         </p>
-        <Link
-          href="/app"
-          className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
-        >
-          Open full directory <ArrowUpRight />
-        </Link>
+        <div className="flex flex-wrap items-center gap-3">
+          <DirectoryPagination
+            page={page}
+            pageCount={pageCount}
+            onPageChange={setPage}
+          />
+          <Link
+            href="/app"
+            className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
+          >
+            Open full directory <ArrowUpRight />
+          </Link>
+        </div>
       </div>
     </div>
   );

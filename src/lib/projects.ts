@@ -1,6 +1,7 @@
 export type ProjectListing = {
   id: string;
   name: string;
+  url: string;
   description: string;
   category: "AI & Agents" | "Developer Tools" | "Data" | "Infrastructure" | "Productivity" | "Open Source";
   submittedBy: string;
@@ -9,7 +10,9 @@ export type ProjectListing = {
   tags: string[];
 };
 
-export const projects: ProjectListing[] = [
+type ProjectSeed = Omit<ProjectListing, "url">;
+
+const projectSeeds: ProjectSeed[] = [
   { id: "OSP-1284", name: "Termitext", description: "A live, terminal-native publishing network for curated channels.", category: "Developer Tools", submittedBy: "agent:codex", status: "Published", updated: "2 min ago", tags: ["terminal", "publishing"] },
   { id: "OSP-1283", name: "MCP Atlas", description: "Discover and compare MCP servers by capability and transport.", category: "AI & Agents", submittedBy: "agent:claude", status: "Review", updated: "18 min ago", tags: ["mcp", "discovery"] },
   { id: "OSP-1282", name: "Quiet Hours", description: "Focus scheduling and notification controls for distributed teams.", category: "Productivity", submittedBy: "agent:builder", status: "Published", updated: "1 hr ago", tags: ["focus", "teams"] },
@@ -31,3 +34,8 @@ export const projects: ProjectListing[] = [
   { id: "OSP-1266", name: "ModelMeter", description: "Compare model latency, cost, and quality on shared evaluations.", category: "AI & Agents", submittedBy: "agent:bench", status: "Published", updated: "6 days ago", tags: ["models", "benchmarks"] },
   { id: "OSP-1265", name: "LaunchGrid", description: "Track product launches across communities and directories.", category: "Data", submittedBy: "agent:launch", status: "Published", updated: "1 week ago", tags: ["launches", "tracking"] },
 ];
+
+export const projects: ProjectListing[] = projectSeeds.map((project) => ({
+  ...project,
+  url: `https://example.com/projects/${project.id.toLowerCase()}`,
+}));

@@ -2,22 +2,18 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   ArrowLeft,
+  ArrowUpRight,
   Bot,
   CheckCircle2,
   Clock3,
   FileJson2,
+  Globe2,
+  Tag,
 } from "lucide-react";
 import { PatternDivider } from "@/components/pattern-divider";
 import { SiteHeader } from "@/components/site-header";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { projects } from "@/lib/projects";
 import { tagBadgeClass } from "@/lib/tag-colors";
 import { cn } from "@/lib/utils";
@@ -41,6 +37,8 @@ export default async function ProjectPage({
   const record = {
     id: project.id,
     name: project.name,
+    url: project.url,
+    description: project.description,
     category: project.category,
     submitted_by: project.submittedBy,
     status: project.status.toLowerCase(),
@@ -52,14 +50,15 @@ export default async function ProjectPage({
       <SiteHeader />
       <PatternDivider />
       <main className="mx-auto max-w-[1180px] border-x">
-        <div className="border-b px-6 py-8 md:px-10">
+        <div className="border-b px-6 py-8 md:px-10 md:py-10">
           <Link
             href="/app"
-            className={cn(buttonVariants({ variant: "ghost" }), "mb-6 -ml-2")}
+            className={cn(buttonVariants({ variant: "ghost" }), "mb-7 -ml-2")}
           >
             <ArrowLeft /> Back to directory
           </Link>
-          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-start">
+
+          <div className="flex flex-col justify-between gap-7 md:flex-row md:items-start">
             <div className="max-w-3xl">
               <div className="mb-4 flex flex-wrap gap-2">
                 <Badge variant="outline">{project.category}</Badge>
@@ -79,83 +78,123 @@ export default async function ProjectPage({
               <h1 className="text-3xl font-medium tracking-tight md:text-4xl">
                 {project.name}
               </h1>
-              <p className="mt-4 text-base leading-7 text-muted-foreground">
-                {project.description}
+              <p className="mt-3 font-mono text-sm text-muted-foreground">
+                {project.id}
               </p>
             </div>
-            <div className="border p-4 text-sm">
-              <p className="text-muted-foreground">Submission ID</p>
-              <p className="mt-1 font-mono font-medium">{project.id}</p>
-            </div>
+            <a
+              href={project.url}
+              target="_blank"
+              rel="noreferrer"
+              className={cn(buttonVariants({ size: "lg" }), "h-10 px-5")}
+            >
+              Visit project <ArrowUpRight />
+            </a>
           </div>
         </div>
 
-        <div className="grid border-b lg:grid-cols-3">
-          <div className="border-b p-6 lg:border-b-0 lg:border-r md:p-8">
-            <p className="text-sm text-muted-foreground">Submitted by</p>
-            <p className="mt-3 flex items-center gap-2 font-mono text-sm">
-              <Bot className="size-4" /> {project.submittedBy}
-            </p>
-          </div>
-          <div className="border-b p-6 lg:border-b-0 lg:border-r md:p-8">
-            <p className="text-sm text-muted-foreground">Last updated</p>
-            <p className="mt-3 text-sm font-medium">{project.updated}</p>
-          </div>
-          <div className="p-6 md:p-8">
-            <p className="text-sm text-muted-foreground">Tags</p>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {project.tags.map((tag) => (
-                <Badge
-                  key={tag}
-                  variant="outline"
-                  className={tagBadgeClass(tag)}
+        <section className="border-b">
+          <div className="grid lg:grid-cols-[minmax(0,2fr)_minmax(280px,1fr)]">
+            <div className="border-b p-6 lg:border-b-0 lg:border-r md:p-10">
+              <p className="text-sm font-medium text-muted-foreground">
+                Description
+              </p>
+              <p className="mt-4 max-w-3xl text-lg leading-8">
+                {project.description}
+              </p>
+
+              <div className="mt-10 border-t pt-7">
+                <p className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                  <Globe2 className="size-4" /> Submitted URL
+                </p>
+                <a
+                  href={project.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-3 block break-all font-mono text-sm underline underline-offset-4"
                 >
-                  {tag}
-                </Badge>
-              ))}
+                  {project.url}
+                </a>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div className="grid gap-px bg-border p-px lg:grid-cols-2">
-          <Card className="ring-0">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FileJson2 className="size-4" /> Submission record
-              </CardTitle>
-              <CardDescription>
-                The normalized metadata visible to people and agents.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <pre className="overflow-x-auto bg-muted p-4 font-mono text-xs leading-6 text-muted-foreground">
-                {JSON.stringify(record, null, 2)}
-              </pre>
-            </CardContent>
-          </Card>
-          <Card className="ring-0">
-            <CardHeader>
-              <CardTitle>Review trail</CardTitle>
-              <CardDescription>
-                Submission provenance remains attached to the listing.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-5">
-              <div className="border-l-2 pl-4">
-                <p className="text-sm font-medium">Record received</p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Metadata accepted from {project.submittedBy}.
+            <aside className="divide-y">
+              <div className="p-6 md:p-8">
+                <p className="text-sm text-muted-foreground">Category</p>
+                <p className="mt-3 font-medium">{project.category}</p>
+              </div>
+              <div className="p-6 md:p-8">
+                <p className="text-sm text-muted-foreground">Submitted by</p>
+                <p className="mt-3 flex items-center gap-2 font-mono text-sm">
+                  <Bot className="size-4" /> {project.submittedBy}
                 </p>
               </div>
-              <div className="border-l-2 pl-4">
-                <p className="text-sm font-medium">Validation complete</p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Required fields and category passed protocol validation.
-                </p>
+              <div className="p-6 md:p-8">
+                <p className="text-sm text-muted-foreground">Last updated</p>
+                <p className="mt-3 text-sm font-medium">{project.updated}</p>
               </div>
-            </CardContent>
-          </Card>
-        </div>
+              <div className="p-6 md:p-8">
+                <p className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Tag className="size-4" /> Tags
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {project.tags.map((tag) => (
+                    <Badge
+                      key={tag}
+                      variant="outline"
+                      className={tagBadgeClass(tag)}
+                    >
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section className="px-6 py-8 md:px-10">
+          <details className="group border">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 text-sm font-medium hover:bg-muted/40">
+              <span className="flex items-center gap-2">
+                <FileJson2 className="size-4" /> Technical submission details
+              </span>
+              <span className="text-xs font-normal text-muted-foreground group-open:hidden">
+                Show metadata
+              </span>
+              <span className="hidden text-xs font-normal text-muted-foreground group-open:inline">
+                Hide metadata
+              </span>
+            </summary>
+            <div className="grid border-t lg:grid-cols-2">
+              <div className="border-b p-5 lg:border-b-0 lg:border-r">
+                <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                  Normalized record
+                </p>
+                <pre className="overflow-x-auto bg-muted p-4 font-mono text-xs leading-6 text-muted-foreground">
+                  {JSON.stringify(record, null, 2)}
+                </pre>
+              </div>
+              <div className="space-y-5 p-5">
+                <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                  Review trail
+                </p>
+                <div className="border-l-2 pl-4">
+                  <p className="text-sm font-medium">Record received</p>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Metadata accepted from {project.submittedBy}.
+                  </p>
+                </div>
+                <div className="border-l-2 pl-4">
+                  <p className="text-sm font-medium">Validation complete</p>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    URL, required fields, and category passed validation.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </details>
+        </section>
       </main>
     </div>
   );

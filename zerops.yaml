@@ -5,10 +5,11 @@ zerops:
       buildCommands:
         - npm ci
         - npm run build
+        - npx esbuild scripts/migrate.mjs --bundle --platform=node --format=esm --outfile=.next/migrate.bundle.mjs
       deployFiles:
         - .next/standalone/~
         - .next/static
-        - node_modules/postgres
+        - .next/migrate.bundle.mjs
         - public
         - db
         - scripts
@@ -23,7 +24,7 @@ zerops:
         PORT: "3000"
         DATABASE_URL: ${db_connectionString}/${db_dbName}
       initCommands:
-        - zsc execOnce ${appVersionId} --retryUntilSuccessful -- node scripts/migrate.mjs
+        - zsc execOnce ${appVersionId} --retryUntilSuccessful -- node .next/migrate.bundle.mjs
       start: node server.js
       healthCheck:
         httpGet:

@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { ProjectFavicon } from "@/components/project-favicon";
 import {
   Table,
   TableBody,
@@ -129,9 +130,7 @@ export function LandingDirectory() {
               <TableRow key={project.id}>
                 <TableCell className="min-w-0 py-3 pl-5 md:pl-6">
                   <div className="flex items-center gap-3">
-                    <div className="hidden size-8 shrink-0 items-center justify-center rounded-md border bg-muted/40 text-xs font-semibold sm:flex">
-                      {project.name.slice(0, 1)}
-                    </div>
+                    <ProjectFavicon name={project.name} website={project.url} className="hidden sm:flex" />
                     <div className="min-w-0">
                       <Link
                         href={`/projects/${project.id.toLowerCase()}`}

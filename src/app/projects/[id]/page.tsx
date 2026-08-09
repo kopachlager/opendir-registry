@@ -11,6 +11,7 @@ import {
   Tag,
 } from "lucide-react";
 import { PatternDivider } from "@/components/pattern-divider";
+import { ProjectFavicon } from "@/components/project-favicon";
 import { SiteHeader } from "@/components/site-header";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
@@ -91,9 +92,12 @@ export default async function ProjectPage({
                   {project.status}
                 </Badge>
               </div>
-              <h1 className="text-3xl font-medium tracking-tight md:text-4xl">
-                {project.name}
-              </h1>
+              <div className="flex items-center gap-4">
+                <ProjectFavicon name={project.name} website={project.url} className="size-11" />
+                <h1 className="text-3xl font-medium tracking-tight md:text-4xl">
+                  {project.name}
+                </h1>
+              </div>
               <p className="mt-3 font-mono text-sm text-muted-foreground">
                 {project.id}
               </p>

@@ -13,6 +13,7 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { DashboardCard } from "@/components/dashboard-card";
 import { DirectoryPagination } from "@/components/directory-pagination";
+import { ProjectFavicon } from "@/components/project-favicon";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -143,14 +144,19 @@ export function DirectoryTable() {
             {visibleProjects.map((project) => (
               <TableRow key={project.id}>
                 <TableCell className="max-w-sm">
-                  <Link
-                    href={`/projects/${project.id.toLowerCase()}`}
-                    className="font-medium hover:underline"
-                  >
-                    {project.name}
-                  </Link>
-                  <div className="line-clamp-1 text-xs text-muted-foreground">
-                    {project.id} · {project.description}
+                  <div className="flex items-start gap-3">
+                    <ProjectFavicon name={project.name} website={project.url} />
+                    <div className="min-w-0">
+                      <Link
+                        href={`/projects/${project.id.toLowerCase()}`}
+                        className="font-medium hover:underline"
+                      >
+                        {project.name}
+                      </Link>
+                      <div className="line-clamp-1 text-xs text-muted-foreground">
+                        {project.id} · {project.description}
+                      </div>
+                    </div>
                   </div>
                   <div className="mt-2 flex gap-1">
                     {project.tags.map((tag) => (

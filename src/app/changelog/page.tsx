@@ -13,6 +13,7 @@ const releases = [
       "Added submission status history and machine-readable review records.",
       "Added shared footers and review policy, privacy, terms, license, and security pages.",
       "Added the MIT license and third-party notices.",
+      "Added project favicons with a resilient letter fallback across directory views.",
       "Removed sample listings and replaced placeholder metrics with database-backed totals.",
     ],
   },

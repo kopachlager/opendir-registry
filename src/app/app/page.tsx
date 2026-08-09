@@ -5,10 +5,8 @@ import { DirectoryTable } from "@/components/directory-table";
 import { SiteHeader } from "@/components/site-header";
 import { UpdateBanner } from "@/components/update-banner";
 import { Badge } from "@/components/ui/badge";
-import { buttonVariants } from "@/components/ui/button";
 import { CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getDirectoryStats } from "@/lib/submissions";
-import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -24,12 +22,11 @@ export default async function DirectoryPage() {
     <div className="min-h-screen bg-background">
       <SiteHeader />
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-        <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="mb-6">
           <div>
             <h1 className="text-2xl tracking-tight">Directory overview</h1>
             <p className="mt-1 text-sm text-muted-foreground">Browse projects approved by OpenDir reviewers.</p>
           </div>
-          <Link href="/submit" className={cn(buttonVariants({ size: "lg" }))}>Submit project</Link>
         </div>
         <div className="grid grid-cols-12 gap-px bg-border p-px">
           <div className="col-span-12"><UpdateBanner /></div>

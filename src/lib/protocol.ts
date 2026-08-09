@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const PROTOCOL_NAME = "openshelf-submission";
+export const PROTOCOL_NAME = "opendir-submission-standard";
 export const PROTOCOL_VERSION = "0.1.0";
 
 export const categories = [
@@ -72,8 +72,8 @@ export function validateSubmission(input: unknown) {
 
 export const submissionJsonSchema = {
   $schema: "https://json-schema.org/draft/2020-12/schema",
-  $id: "https://openshelf.dev/spec/v0.1/submission.schema.json",
-  title: "OpenShelf Project Submission",
+  $id: "https://raw.githubusercontent.com/kopachlager/opendir-registry/main/spec/opendir-submission.schema.json",
+  title: "OpenDir Project Submission",
   description: "A portable record for submitting a deployed software project.",
   type: "object",
   additionalProperties: false,

@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "OpenShelf — Directory for agents",
+  title: "OpenDir — The project directory for agents",
   description: "A project directory with a standard submission protocol for software agents.",
 };
 

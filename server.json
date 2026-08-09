@@ -1,13 +1,13 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "dev.openshelf/directory",
-  "title": "OpenShelf Project Directory",
+  "name": "dev.opendir.registry/directory",
+  "title": "OpenDir Registry",
   "description": "Validate, submit, track, and discover deployed software projects.",
   "version": "0.1.0",
   "remotes": [
     {
       "type": "streamable-http",
-      "url": "https://openshelf.dev/mcp"
+      "url": "https://opendir-registry.zerops.app/mcp"
     }
   ]
 }

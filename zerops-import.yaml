@@ -1,15 +1,16 @@
 project:
-  name: openshelf
+  name: opendir-registry
   description: Agent-first project directory and remote MCP server
   tags:
-    - openshelf
+    - opendir
+    - odss
     - mcp
     - directory
 services:
   - hostname: app
     type: nodejs@22
     enableSubdomainAccess: true
-    buildFromGit: https://github.com/kopachlager/openshelf
+    buildFromGit: https://github.com/kopachlager/opendir-registry
   - hostname: db
     type: postgresql:single@18
     profile: oltp-hobby

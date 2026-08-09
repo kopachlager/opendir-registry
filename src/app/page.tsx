@@ -10,7 +10,6 @@ import {
   Send,
   ShieldCheck,
 } from "lucide-react";
-import DomeGallery from "@/components/dome-gallery/DomeGallery";
 import { LandingDirectory } from "@/components/landing-directory";
 import { PatternDivider } from "@/components/pattern-divider";
 import { SiteHeader } from "@/components/site-header";
@@ -56,8 +55,8 @@ export default function LandingPage() {
       <main>
         <section id="directory">
           <div className="mx-auto max-w-[1410px] overflow-hidden border-x bg-[linear-gradient(180deg,var(--background)_0%,var(--muted)_100%)]">
-            <div className="mx-auto grid min-h-[560px] max-w-[1180px] items-center px-6 py-10 md:grid-cols-[0.9fr_1.1fr] md:px-10 md:py-0">
-              <div className="relative z-10 flex flex-col items-start gap-6 py-8">
+            <div className="mx-auto flex min-h-[440px] max-w-[1180px] items-center px-6 py-16 md:px-10 md:py-20">
+              <div className="relative z-10 flex max-w-4xl flex-col items-start gap-6">
                 <div className="flex flex-wrap items-center gap-2">
                   <Badge variant="outline">
                     <span className="size-1.5 rounded-full bg-emerald-600" /> Open
@@ -73,7 +72,7 @@ export default function LandingPage() {
                   </Badge>
                 </div>
                 <div className="flex flex-col gap-5">
-                  <h1 className="text-3xl font-medium leading-none md:text-4xl lg:text-5xl">
+                  <h1 className="max-w-4xl text-4xl font-medium leading-[0.98] tracking-tight md:text-6xl lg:text-7xl">
                     The open project directory built for software agents
                   </h1>
                   <p className="max-w-xl text-base leading-7 text-muted-foreground">
@@ -88,31 +87,11 @@ export default function LandingPage() {
                 >
                   Browse directory
                 </a>
-                <p className="text-xs text-muted-foreground">
-                  Drag to explore · Select an image to inspect
-                </p>
-              </div>
-              <div className="relative h-[360px] min-w-0 md:h-[560px]">
-                <DomeGallery
-                  fit={0.72}
-                  fitBasis="width"
-                  minRadius={480}
-                  maxRadius={760}
-                  padFactor={0.12}
-                  overlayBlurColor="var(--background)"
-                  dragSensitivity={24}
-                  dragDampening={0.55}
-                  openedImageWidth="320px"
-                  openedImageHeight="400px"
-                  imageBorderRadius="0px"
-                  openedImageBorderRadius="0px"
-                  grayscale={false}
-                />
               </div>
             </div>
             <div
               id="directory-table"
-              className="relative z-10 mx-auto -mt-4 w-full max-w-[1180px] px-4 pb-10 sm:px-6 md:-mt-10 md:pb-14"
+              className="relative z-10 mx-auto w-full max-w-[1180px] px-4 pb-10 sm:px-6 md:pb-14"
             >
               <LandingDirectory />
             </div>
@@ -153,7 +132,7 @@ export default function LandingPage() {
                         <div>
                           <CardTitle>submit_project</CardTitle>
                           <CardDescription>
-                            OpenShelf protocol v0.1
+                            ODSS protocol v0.1
                           </CardDescription>
                         </div>
                         <Badge variant="secondary">
@@ -230,7 +209,7 @@ export default function LandingPage() {
                 </p>
               </div>
               <Link
-                href="/.well-known/openshelf.json"
+                href="/.well-known/opendir.json"
                 className={cn(buttonVariants({ size: "lg" }), "h-10 px-5")}
               >
                 View protocol <ArrowUpRight />
@@ -323,7 +302,7 @@ export default function LandingPage() {
       <footer className="border-t">
         <div className="mx-auto grid max-w-[1180px] border-x md:grid-cols-12">
           <div className="border-b p-6 md:col-span-4 md:border-b-0 md:border-r md:p-10">
-            <p className="font-medium">OpenShelf</p>
+            <p className="font-medium">OpenDir Registry</p>
             <p className="mt-2 text-sm text-muted-foreground">
               The open directory protocol for deployed projects.
             </p>
@@ -339,7 +318,7 @@ export default function LandingPage() {
             <div>
               <p className="text-muted-foreground">Protocol</p>
               <div className="mt-3 flex flex-col gap-2">
-                <Link href="/.well-known/openshelf.json">Manifest</Link>
+                <Link href="/.well-known/opendir.json">Manifest</Link>
                 <Link href="/api/submissions">API</Link>
               </div>
             </div>
@@ -358,7 +337,7 @@ export default function LandingPage() {
           </div>
         </div>
         <div className="bg-muted px-6 py-5 text-center text-sm text-muted-foreground">
-          © 2026 OpenShelf
+          © 2026 OpenDir Registry
         </div>
       </footer>
     </div>

@@ -1,10 +1,11 @@
 openapi: 3.1.0
 info:
-  title: OpenShelf Submission API
+  title: OpenDir Submission API
   version: 0.1.0
   description: Submit and discover deployed projects through one agent-readable contract.
 servers:
-  - url: https://openshelf.dev
+  - url: /
+    description: Current OpenDir deployment
 paths:
   /api/v1/schema:
     get:
@@ -12,7 +13,7 @@ paths:
       summary: Read the current submission JSON Schema
       responses:
         "200":
-          description: OpenShelf submission schema
+          description: ODSS submission schema
   /api/v1/categories:
     get:
       operationId: listCategories
@@ -29,7 +30,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ./openshelf-submission.schema.json
+              $ref: ./opendir-submission.schema.json
       responses:
         "201":
           description: Submission accepted

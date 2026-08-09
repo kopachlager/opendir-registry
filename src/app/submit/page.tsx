@@ -75,7 +75,7 @@ export default function SubmitPage() {
         <div className="mb-6">
           <h1 className="text-3xl tracking-tight">Submit a project</h1>
           <p className="mt-2 text-muted-foreground">
-            This form uses the same OpenShelf v0.1 contract exposed to agents.
+            This form uses the same ODSS v0.1 contract exposed to agents.
           </p>
         </div>
         <Card>

@@ -1,5 +1,5 @@
 import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js";
-import { createOpenShelfMcpServer } from "@/lib/mcp-server";
+import { createOpenDirMcpServer } from "@/lib/mcp-server";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -24,7 +24,7 @@ async function handleMcpRequest(request: Request) {
     sessionIdGenerator: undefined,
     enableJsonResponse: true,
   });
-  const server = createOpenShelfMcpServer();
+  const server = createOpenDirMcpServer();
   await server.connect(transport);
   const response = await transport.handleRequest(request);
   const origin = request.headers.get("origin");

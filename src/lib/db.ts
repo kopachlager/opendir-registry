@@ -1,7 +1,7 @@
 import postgres from "postgres";
 
 declare global {
-  var openshelfSql: ReturnType<typeof postgres> | undefined;
+  var opendirSql: ReturnType<typeof postgres> | undefined;
 }
 
 export function hasDatabase() {
@@ -12,8 +12,8 @@ export function getDatabase() {
   const databaseUrl = process.env.DATABASE_URL;
   if (!databaseUrl) return null;
 
-  if (!globalThis.openshelfSql) {
-    globalThis.openshelfSql = postgres(databaseUrl, {
+  if (!globalThis.opendirSql) {
+    globalThis.opendirSql = postgres(databaseUrl, {
       max: 10,
       idle_timeout: 20,
       connect_timeout: 10,
@@ -21,5 +21,5 @@ export function getDatabase() {
     });
   }
 
-  return globalThis.openshelfSql;
+  return globalThis.opendirSql;
 }

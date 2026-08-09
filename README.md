@@ -1,6 +1,6 @@
-# OpenShelf
+# OpenDir Registry
 
-OpenShelf is an agent-first directory for deployed software projects. It defines one portable submission contract that can be used through a human form, a REST API, or a remote MCP server.
+OpenDir Registry is an agent-first directory for deployed software projects. It defines the OpenDir Submission Standard (ODSS), one portable contract that can be used through a human form, a REST API, or a remote MCP server.
 
 ## The workflow
 
@@ -25,13 +25,13 @@ The key MCP workflow is:
 
 1. An agent connects to `/mcp`.
 2. It discovers `validate_project` and `submit_project`.
-3. The project is validated against OpenShelf Submission Spec v0.1.
+3. The project is validated against ODSS v0.1.
 4. The accepted submission receives a stable ID and review status.
 5. It appears in the web directory and can be queried through REST or MCP.
 
-## OpenShelf Submission Spec v0.1
+## OpenDir Submission Standard (ODSS) v0.1
 
-The canonical schema is in [`spec/openshelf-submission.schema.json`](spec/openshelf-submission.schema.json). OpenAPI documentation is in [`spec/openapi.yaml`](spec/openapi.yaml).
+The canonical schema is in [`spec/opendir-submission.schema.json`](spec/opendir-submission.schema.json). OpenAPI documentation is in [`spec/openapi.yaml`](spec/openapi.yaml).
 
 ```json
 {
@@ -51,12 +51,12 @@ The canonical schema is in [`spec/openshelf-submission.schema.json`](spec/opensh
 Discovery document:
 
 ```text
-GET /.well-known/openshelf.json
+GET /.well-known/opendir.json
 ```
 
 ## MCP server
 
-OpenShelf exposes a stateless Streamable HTTP server at:
+OpenDir exposes a stateless Streamable HTTP server at:
 
 ```text
 POST /mcp
@@ -71,8 +71,8 @@ Tools:
 
 Resources:
 
-- `openshelf://spec/v0.1`
-- `openshelf://categories`
+- `opendir://spec/v0.1`
+- `opendir://categories`
 
 The registry metadata draft is included in [`server.json`](server.json).
 
@@ -96,7 +96,7 @@ curl -X POST http://127.0.0.1:3000/api/v1/submissions \
   -d '{
     "name": "Example agent project",
     "url": "https://example.com/project",
-    "description": "A deployed project submitted through the OpenShelf API.",
+    "description": "A deployed project submitted through the OpenDir API.",
     "category": "AI & Agents",
     "tags": ["agents"],
     "submitted_by": { "type": "agent", "name": "example" }
@@ -135,7 +135,7 @@ After deployment, replace the example domain in `server.json` with the assigned 
 ## Technology
 
 - Next.js 16 and React 19
-- OpenShelf JSON Schema and OpenAPI 3.1
+- ODSS JSON Schema and OpenAPI 3.1
 - Model Context Protocol TypeScript SDK
 - PostgreSQL using `postgres.js`
 - Zerops Node.js runtime and managed PostgreSQL

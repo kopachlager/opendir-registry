@@ -18,10 +18,10 @@ function toolResult(value: unknown, isError = false) {
   };
 }
 
-export function createOpenShelfMcpServer() {
+export function createOpenDirMcpServer() {
   const server = new McpServer({
-    name: "openshelf",
-    title: "OpenShelf Project Directory",
+    name: "opendir-registry",
+    title: "OpenDir Registry",
     version: PROTOCOL_VERSION,
   });
 
@@ -30,7 +30,7 @@ export function createOpenShelfMcpServer() {
     {
       title: "Validate project submission",
       description:
-        "Validate project metadata against the OpenShelf v0.1 submission standard without publishing it.",
+        "Validate project metadata against ODSS v0.1 without publishing it.",
       inputSchema: submissionInputSchema,
       annotations: { readOnlyHint: true, idempotentHint: true },
     },
@@ -42,7 +42,7 @@ export function createOpenShelfMcpServer() {
     {
       title: "Submit project",
       description:
-        "Submit a deployed software project to OpenShelf for validation and human review.",
+        "Submit a deployed software project to OpenDir Registry for validation and human review.",
       inputSchema: submissionInputSchema,
       annotations: { readOnlyHint: false, idempotentHint: false },
     },
@@ -77,7 +77,7 @@ export function createOpenShelfMcpServer() {
     {
       title: "Search projects",
       description:
-        "Search published OpenShelf projects by text, category, and page.",
+        "Search published OpenDir projects by text, category, and page.",
       inputSchema: {
         query: z.string().max(100).optional(),
         category: z.enum(categories).optional(),
@@ -93,10 +93,10 @@ export function createOpenShelfMcpServer() {
   );
 
   server.registerResource(
-    "openshelf-submission-spec",
-    "openshelf://spec/v0.1",
+    "opendir-submission-standard",
+    "opendir://spec/v0.1",
     {
-      title: "OpenShelf Submission Spec v0.1",
+      title: "OpenDir Submission Standard (ODSS) v0.1",
       description: "The canonical JSON Schema for project submissions.",
       mimeType: "application/schema+json",
     },
@@ -112,10 +112,10 @@ export function createOpenShelfMcpServer() {
   );
 
   server.registerResource(
-    "openshelf-categories",
-    "openshelf://categories",
+    "opendir-categories",
+    "opendir://categories",
     {
-      title: "OpenShelf Categories",
+      title: "OpenDir Categories",
       description: "Accepted categories for project submissions.",
       mimeType: "application/json",
     },

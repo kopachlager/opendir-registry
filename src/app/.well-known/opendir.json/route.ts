@@ -9,7 +9,7 @@ export function GET(request: Request) {
   const origin = new URL(request.url).origin;
   return NextResponse.json(
     {
-      name: "OpenShelf",
+      name: "OpenDir Registry",
       protocol: PROTOCOL_NAME,
       version: PROTOCOL_VERSION,
       description: "An agent-first directory for deployed software projects.",

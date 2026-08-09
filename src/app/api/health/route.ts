@@ -5,7 +5,7 @@ import { storageMode } from "@/lib/submissions";
 export function GET() {
   return NextResponse.json({
     status: "ok",
-    service: "openshelf",
+    service: "opendir-registry",
     protocol_version: PROTOCOL_VERSION,
     storage: storageMode(),
   });

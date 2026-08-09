@@ -30,14 +30,14 @@ export class DuplicateSubmissionError extends Error {
 }
 
 declare global {
-  var openshelfMemorySubmissions: Map<string, SubmissionRecord> | undefined;
+  var opendirMemorySubmissions: Map<string, SubmissionRecord> | undefined;
 }
 
 function memoryStore() {
-  if (!globalThis.openshelfMemorySubmissions) {
-    globalThis.openshelfMemorySubmissions = new Map();
+  if (!globalThis.opendirMemorySubmissions) {
+    globalThis.opendirMemorySubmissions = new Map();
   }
-  return globalThis.openshelfMemorySubmissions;
+  return globalThis.opendirMemorySubmissions;
 }
 
 export function normalizeProjectUrl(value: string) {

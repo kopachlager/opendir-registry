@@ -1,0 +1,45 @@
+openapi: 3.1.0
+info:
+  title: OpenShelf Submission API
+  version: 0.1.0
+  description: Submit and discover deployed projects through one agent-readable contract.
+paths:
+  /api/v1/schema:
+    get:
+      operationId: getSubmissionSchema
+      responses:
+        "200": { description: OpenShelf submission JSON Schema }
+  /api/v1/categories:
+    get:
+      operationId: listCategories
+      responses:
+        "200": { description: Accepted project categories }
+  /api/v1/submissions:
+    post:
+      operationId: submitProject
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: /api/v1/schema
+      responses:
+        "201": { description: Submission accepted }
+        "400": { description: Validation failed }
+        "409": { description: Duplicate URL }
+  /api/v1/submissions/{submissionId}:
+    get:
+      operationId: getSubmissionStatus
+      parameters:
+        - in: path
+          name: submissionId
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: Submission status }
+        "404": { description: Submission not found }
+  /api/v1/projects:
+    get:
+      operationId: searchProjects
+      responses:
+        "200": { description: Paginated projects }

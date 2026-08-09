@@ -10,7 +10,7 @@ import {
   FolderOpen,
   Search,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { DashboardCard } from "@/components/dashboard-card";
 import { DirectoryPagination } from "@/components/directory-pagination";
 import { Badge } from "@/components/ui/badge";
@@ -30,7 +30,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { projects } from "@/lib/projects";
+import { loadDirectorySubmissions } from "@/lib/directory-client";
+import { projects as demoProjects } from "@/lib/projects";
 import { tagBadgeClass } from "@/lib/tag-colors";
 
 const categories = [
@@ -49,6 +50,23 @@ export function DirectoryTable() {
   const [category, setCategory] = useState<(typeof categories)[number]>("All");
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
+  const [projects, setProjects] = useState(demoProjects);
+
+  useEffect(() => {
+    let active = true;
+    loadDirectorySubmissions().then((submissions) => {
+      if (!active || submissions.length === 0) return;
+      setProjects([
+        ...submissions,
+        ...demoProjects.filter(
+          (project) => !submissions.some((entry) => entry.id === project.id),
+        ),
+      ]);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
   const filtered = useMemo(
     () =>
       projects.filter(
@@ -58,7 +76,7 @@ export function DirectoryTable() {
             .toLowerCase()
             .includes(query.toLowerCase()),
       ),
-    [category, query],
+    [category, projects, query],
   );
   const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize));
   const visibleProjects = filtered.slice(

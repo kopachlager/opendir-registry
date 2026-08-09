@@ -15,6 +15,7 @@ import { SiteHeader } from "@/components/site-header";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { projects } from "@/lib/projects";
+import { getSubmission } from "@/lib/submissions";
 import { tagBadgeClass } from "@/lib/tag-colors";
 import { cn } from "@/lib/utils";
 
@@ -28,9 +29,32 @@ export default async function ProjectPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const project = projects.find(
+  const staticProject = projects.find(
     (entry) => entry.id.toLowerCase() === id.toLowerCase(),
   );
+  const submission = staticProject ? null : await getSubmission(id);
+  const project =
+    staticProject ??
+    (submission
+      ? {
+          id: submission.id,
+          name: submission.name,
+          url: submission.url,
+          description: submission.description,
+          category: submission.category as (typeof projects)[number]["category"],
+          tags: submission.tags,
+          submittedBy: submission.submittedBy,
+          status:
+            submission.status === "published"
+              ? ("Published" as const)
+              : ("Review" as const),
+          updated: new Date(submission.updatedAt).toLocaleDateString(undefined, {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          }),
+        }
+      : null);
 
   if (!project) notFound();
 

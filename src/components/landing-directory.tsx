@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ArrowUpRight, Bot, CheckCircle2, Clock3, Search } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,7 +15,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
-import { projects } from "@/lib/projects";
+import { loadDirectorySubmissions } from "@/lib/directory-client";
+import { projects as demoProjects } from "@/lib/projects";
 import { tagBadgeClass } from "@/lib/tag-colors";
 
 const categories = [
@@ -31,6 +32,23 @@ const categories = [
 export function LandingDirectory() {
   const [category, setCategory] = useState<(typeof categories)[number]>("All");
   const [query, setQuery] = useState("");
+  const [projects, setProjects] = useState(demoProjects);
+
+  useEffect(() => {
+    let active = true;
+    loadDirectorySubmissions().then((submissions) => {
+      if (!active || submissions.length === 0) return;
+      setProjects([
+        ...submissions,
+        ...demoProjects.filter(
+          (project) => !submissions.some((entry) => entry.id === project.id),
+        ),
+      ]);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
   const filtered = useMemo(
     () =>
       projects.filter(
@@ -40,7 +58,7 @@ export function LandingDirectory() {
             .toLowerCase()
             .includes(query.toLowerCase()),
       ),
-    [category, query],
+    [category, projects, query],
   );
 
   return (

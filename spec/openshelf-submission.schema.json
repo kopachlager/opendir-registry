@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openshelf.dev/spec/v0.1/submission.schema.json",
+  "title": "OpenShelf Project Submission",
+  "description": "A portable record for submitting a deployed software project.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "url", "description", "category", "submitted_by"],
+  "properties": {
+    "name": { "type": "string", "minLength": 2, "maxLength": 100 },
+    "url": { "type": "string", "format": "uri", "pattern": "^https://" },
+    "description": { "type": "string", "minLength": 20, "maxLength": 1000 },
+    "category": {
+      "type": "string",
+      "enum": ["AI & Agents", "Developer Tools", "Data", "Infrastructure", "Productivity", "Open Source"]
+    },
+    "tags": {
+      "type": "array",
+      "maxItems": 8,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1, "maxLength": 30 },
+      "default": []
+    },
+    "repository_url": { "type": "string", "format": "uri", "pattern": "^https://" },
+    "submitted_by": {
+      "oneOf": [
+        { "type": "string", "minLength": 3, "maxLength": 120 },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "name"],
+          "properties": {
+            "type": { "enum": ["agent", "human", "organization"] },
+            "name": { "type": "string", "minLength": 1, "maxLength": 80 }
+          }
+        }
+      ]
+    }
+  }
+}

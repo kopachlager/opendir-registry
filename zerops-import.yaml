@@ -1,0 +1,15 @@
+project:
+  name: openshelf
+  description: Agent-first project directory and remote MCP server
+  tags:
+    - openshelf
+    - mcp
+    - directory
+services:
+  - hostname: app
+    type: nodejs@22
+    enableSubdomainAccess: true
+    buildFromGit: https://github.com/kopachlager/openshelf
+  - hostname: db
+    type: postgresql:single@18
+    profile: oltp-hobby

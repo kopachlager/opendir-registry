@@ -15,8 +15,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
-import { loadDirectorySubmissions } from "@/lib/directory-client";
-import { projects as demoProjects } from "@/lib/projects";
+import { loadDirectoryProjects } from "@/lib/directory-client";
+import type { ProjectListing } from "@/lib/projects";
 import { tagBadgeClass } from "@/lib/tag-colors";
 
 const categories = [
@@ -32,18 +32,15 @@ const categories = [
 export function LandingDirectory() {
   const [category, setCategory] = useState<(typeof categories)[number]>("All");
   const [query, setQuery] = useState("");
-  const [projects, setProjects] = useState(demoProjects);
+  const [projects, setProjects] = useState<ProjectListing[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let active = true;
-    loadDirectorySubmissions().then((submissions) => {
-      if (!active || submissions.length === 0) return;
-      setProjects([
-        ...submissions,
-        ...demoProjects.filter(
-          (project) => !submissions.some((entry) => entry.id === project.id),
-        ),
-      ]);
+    loadDirectoryProjects().then((publishedProjects) => {
+      if (!active) return;
+      setProjects(publishedProjects);
+      setLoading(false);
     });
     return () => {
       active = false;
@@ -70,10 +67,10 @@ export function LandingDirectory() {
               <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-500 opacity-75" />
               <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
             </span>
-            <h2 className="text-xl font-medium">Latest project submissions</h2>
+            <h2 className="text-xl font-medium">Latest published projects</h2>
           </div>
           <p className="mt-1 text-sm text-muted-foreground">
-            Search and filter the newest 20 projects.
+            Search and filter projects approved for the public directory.
           </p>
         </div>
         <div className="relative w-full lg:w-80">
@@ -191,15 +188,16 @@ export function LandingDirectory() {
             ))}
           </TableBody>
         </Table>
-        {filtered.length === 0 && (
+        {!loading && filtered.length === 0 && (
           <div className="p-10 text-center text-sm text-muted-foreground">
             No projects match this search.
           </div>
         )}
+        {loading && <div className="p-10 text-center text-sm text-muted-foreground">Loading published projects…</div>}
       </div>
       <div className="flex flex-col items-start justify-between gap-3 border-t px-5 py-4 sm:flex-row sm:items-center md:px-6">
         <p className="text-sm text-muted-foreground">
-          Showing {filtered.length} of {projects.length} latest submissions
+          Showing {filtered.length} of {projects.length} published projects
         </p>
         <Link
           href="/app"

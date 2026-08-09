@@ -30,8 +30,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { loadDirectorySubmissions } from "@/lib/directory-client";
-import { projects as demoProjects } from "@/lib/projects";
+import { loadDirectoryProjects } from "@/lib/directory-client";
+import type { ProjectListing } from "@/lib/projects";
 import { tagBadgeClass } from "@/lib/tag-colors";
 
 const categories = [
@@ -50,18 +50,15 @@ export function DirectoryTable() {
   const [category, setCategory] = useState<(typeof categories)[number]>("All");
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
-  const [projects, setProjects] = useState(demoProjects);
+  const [projects, setProjects] = useState<ProjectListing[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let active = true;
-    loadDirectorySubmissions().then((submissions) => {
-      if (!active || submissions.length === 0) return;
-      setProjects([
-        ...submissions,
-        ...demoProjects.filter(
-          (project) => !submissions.some((entry) => entry.id === project.id),
-        ),
-      ]);
+    loadDirectoryProjects().then((publishedProjects) => {
+      if (!active) return;
+      setProjects(publishedProjects);
+      setLoading(false);
     });
     return () => {
       active = false;
@@ -206,11 +203,12 @@ export function DirectoryTable() {
             ))}
           </TableBody>
         </Table>
-        {filtered.length === 0 && (
+        {!loading && filtered.length === 0 && (
           <div className="p-10 text-center text-sm text-muted-foreground">
             No projects match this search.
           </div>
         )}
+        {loading && <div className="p-10 text-center text-sm text-muted-foreground">Loading published projects…</div>}
         <div className="flex flex-col items-start justify-between gap-3 border-t px-4 py-4 sm:flex-row sm:items-center">
           <p className="text-sm text-muted-foreground">
             {filtered.length === 0

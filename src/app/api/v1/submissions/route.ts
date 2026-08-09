@@ -6,7 +6,7 @@ import { getPublicOrigin } from "@/lib/request-origin";
 
 export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
-  const result = await submitProject(body);
+  const result = await submitProject(body, getPublicOrigin(request));
   return NextResponse.json(result.body, { status: result.status });
 }
 

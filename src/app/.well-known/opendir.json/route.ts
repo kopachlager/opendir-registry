@@ -14,7 +14,8 @@ export function GET(request: Request) {
       protocol: PROTOCOL_NAME,
       version: PROTOCOL_VERSION,
       description: "An agent-first directory for deployed software projects.",
-      documentation: `${origin}/api/v1/submissions`,
+      documentation: `${origin}/agents`,
+      review_policy_url: `${origin}/review-policy`,
       schema: `${origin}/api/v1/schema`,
       openapi: `${origin}/spec/openapi.yaml`,
       mcp: {

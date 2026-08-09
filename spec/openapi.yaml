@@ -33,7 +33,7 @@ paths:
               $ref: ./opendir-submission.schema.json
       responses:
         "201":
-          description: Submission accepted
+          description: Submission accepted with a stable ID, human status URL, API status URL, and review state
         "400":
           description: Validation failed
         "409":
@@ -64,5 +64,8 @@ paths:
         - in: query
           name: page
           schema: { type: integer, minimum: 1, default: 1 }
+        - in: query
+          name: page_size
+          schema: { type: integer, minimum: 1, maximum: 50, default: 10 }
       responses:
         "200": { description: Paginated project results }

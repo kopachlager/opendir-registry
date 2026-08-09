@@ -209,7 +209,7 @@ export default function LandingPage() {
                 </p>
               </div>
               <Link
-                href="/.well-known/opendir.json"
+                href="/agents"
                 className={cn(buttonVariants({ size: "lg" }), "h-10 px-5")}
               >
                 View protocol <ArrowUpRight />
@@ -225,7 +225,7 @@ export default function LandingPage() {
                 [
                   FileCheck2,
                   "Validate",
-                  "Check URLs, metadata, categories, and duplicate submissions.",
+                  "Check URL format, metadata, categories, and duplicate submissions.",
                 ],
                 [
                   CheckCircle2,
@@ -319,7 +319,8 @@ export default function LandingPage() {
               <p className="text-muted-foreground">Protocol</p>
               <div className="mt-3 flex flex-col gap-2">
                 <Link href="/.well-known/opendir.json">Manifest</Link>
-                <Link href="/api/submissions">API</Link>
+                <Link href="/agents">Agent docs</Link>
+                <Link href="/api/v1/submissions">API</Link>
               </div>
             </div>
             <div>

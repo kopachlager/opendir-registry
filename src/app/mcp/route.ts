@@ -25,7 +25,7 @@ async function handleMcpRequest(request: Request) {
     sessionIdGenerator: undefined,
     enableJsonResponse: true,
   });
-  const server = createOpenDirMcpServer();
+  const server = createOpenDirMcpServer({ publicOrigin: getPublicOrigin(request) });
   await server.connect(transport);
   const response = await transport.handleRequest(request);
   const origin = request.headers.get("origin");

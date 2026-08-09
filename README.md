@@ -74,6 +74,8 @@ Resources:
 - `opendir://spec/v0.1`
 - `opendir://categories`
 
+Human-readable integration instructions are available at `/agents`; the raw discovery contract remains at `/.well-known/opendir.json`.
+
 The registry metadata draft is included in [`server.json`](server.json).
 
 ## REST API
@@ -87,6 +89,8 @@ POST /api/v1/submissions
 GET  /api/v1/submissions/:id
 GET  /api/health
 ```
+
+Each accepted submission returns `/submissions/:id` for people and `/api/v1/submissions/:id` for agents.
 
 Example submission:
 
@@ -130,7 +134,7 @@ The repository contains two Zerops files:
 
 Import `zerops-import.yaml` in Zerops or use zCLI. The app receives `DATABASE_URL` from the managed `db` service automatically.
 
-After deployment, replace the example domain in `server.json` with the assigned Zerops subdomain or custom domain.
+The deployed service publishes its assigned Zerops URL in `server.json` and in the well-known discovery manifest.
 
 ## Technology
 
@@ -141,6 +145,8 @@ After deployment, replace the example domain in `server.json` with the assigned 
 - Zerops Node.js runtime and managed PostgreSQL
 - Tailwind CSS and shadcn-style primitives
 
-## Current review model
+## Review model
 
-Valid submissions enter the `review` state and are visible with that status. The next moderation slice adds protected publish/reject actions and event history. Raw IP addresses are not collected.
+Valid submissions enter the private `review` queue. A reviewer signs in at `/admin`, opens the live project and repository, and either publishes the project or rejects it with a reason. Publishing creates the public project record; both decisions are written to the submission event history. Public search returns only published projects. Raw IP addresses are not collected.
+
+Set `ADMIN_TOKEN` on the application service to enable reviewer access. `ADMIN_REVIEWER_NAME` is optional and controls the name written to review events.

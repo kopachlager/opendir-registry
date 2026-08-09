@@ -18,7 +18,7 @@ function toolResult(value: unknown, isError = false) {
   };
 }
 
-export function createOpenDirMcpServer() {
+export function createOpenDirMcpServer(options?: { publicOrigin?: string }) {
   const server = new McpServer({
     name: "opendir-registry",
     title: "OpenDir Registry",
@@ -47,7 +47,7 @@ export function createOpenDirMcpServer() {
       annotations: { readOnlyHint: false, idempotentHint: false },
     },
     async (input) => {
-      const result = await submitProject(input);
+      const result = await submitProject(input, options?.publicOrigin);
       return toolResult(result.body, !result.ok);
     },
   );

@@ -33,6 +33,8 @@ export function serializeSubmission(record: SubmissionRecord) {
     submitted_by: record.submittedBy,
     status: record.status,
     validation_errors: record.validationErrors,
+    review_reason: record.reviewReason,
+    reviewed_at: record.reviewedAt,
     created_at: record.createdAt,
     updated_at: record.updatedAt,
   };
@@ -41,18 +43,25 @@ export function serializeSubmission(record: SubmissionRecord) {
 function serializeSubmissionResponse(
   record: SubmissionRecord,
   storage: "postgres" | "memory",
+  publicOrigin?: string,
 ) {
+  const pagePath = `/submissions/${record.id}`;
+  const apiPath = `/api/v1/submissions/${record.id}`;
   return {
     accepted: true,
     submission_id: record.id,
     status: record.status,
-    status_url: `/api/v1/submissions/${record.id}`,
+    status_url: publicOrigin ? `${publicOrigin}${pagePath}` : pagePath,
+    api_status_url: publicOrigin ? `${publicOrigin}${apiPath}` : apiPath,
     storage,
     submission: serializeSubmission(record),
   };
 }
 
-export async function submitProject(input: unknown): Promise<SubmissionServiceResult> {
+export async function submitProject(
+  input: unknown,
+  publicOrigin?: string,
+): Promise<SubmissionServiceResult> {
   const validation = validateSubmission(input);
   if (!validation.valid) {
     return {
@@ -71,7 +80,7 @@ export async function submitProject(input: unknown): Promise<SubmissionServiceRe
     return {
       ok: true,
       status: 201,
-      body: serializeSubmissionResponse(record, storage),
+      body: serializeSubmissionResponse(record, storage, publicOrigin),
     };
   } catch (error) {
     if (error instanceof DuplicateSubmissionError) {

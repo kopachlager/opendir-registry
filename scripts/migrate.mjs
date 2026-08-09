@@ -1,4 +1,4 @@
-import { readFile } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import postgres from "postgres";
 
 const databaseUrl = process.env.DATABASE_URL;
@@ -8,14 +8,32 @@ if (!databaseUrl) {
 }
 
 const sql = postgres(databaseUrl, { max: 1, prepare: false });
-const migration = await readFile(
-  new URL("../db/migrations/001_initial.sql", import.meta.url),
-  "utf8",
-);
+const migrationsDirectory = new URL("../db/migrations/", import.meta.url);
+const migrationFiles = (await readdir(migrationsDirectory))
+  .filter((file) => file.endsWith(".sql"))
+  .sort();
 
 try {
-  await sql.unsafe(migration);
-  console.log("Applied db/migrations/001_initial.sql");
+  await sql`
+    CREATE TABLE IF NOT EXISTS schema_migrations (
+      name TEXT PRIMARY KEY,
+      applied_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `;
+  for (const file of migrationFiles) {
+    const [existing] = await sql`
+      SELECT name FROM schema_migrations WHERE name = ${file}
+    `;
+    if (existing) continue;
+    const migration = await readFile(new URL(file, migrationsDirectory), "utf8");
+    await sql.begin(async (transaction) => {
+      await transaction.unsafe(migration);
+      await transaction`
+        INSERT INTO schema_migrations (name) VALUES (${file})
+      `;
+    });
+    console.log(`Applied db/migrations/${file}`);
+  }
 } finally {
   await sql.end();
 }

@@ -3,11 +3,17 @@
 import { useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
 
-function faviconUrl(website: string) {
+function faviconCandidates(website: string) {
   try {
-    return `${new URL(website).origin}/favicon.ico`;
+    const origin = new URL(website).origin;
+    return [
+      `${origin}/favicon.ico`,
+      `${origin}/favicon.svg`,
+      `${origin}/favicon-32x32.png`,
+      `${origin}/apple-touch-icon.png`,
+    ];
   } catch {
-    return "";
+    return [];
   }
 }
 
@@ -20,8 +26,9 @@ export function ProjectFavicon({
   website: string;
   className?: string;
 }) {
-  const src = useMemo(() => faviconUrl(website), [website]);
-  const [failedSrc, setFailedSrc] = useState("");
+  const candidates = useMemo(() => faviconCandidates(website), [website]);
+  const [failedSources, setFailedSources] = useState<string[]>([]);
+  const src = candidates.find((candidate) => !failedSources.includes(candidate));
 
   return (
     <span
@@ -31,14 +38,14 @@ export function ProjectFavicon({
       )}
       aria-hidden="true"
     >
-      {src && failedSrc !== src ? (
+      {src ? (
         // A native image allows favicons from submitted project origins without proxying them through OpenDir.
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={src}
           alt=""
           className="size-full object-contain p-1.5"
-          onError={() => setFailedSrc(src)}
+          onError={() => setFailedSources((current) => [...current, src])}
         />
       ) : (
         name.trim().slice(0, 1).toUpperCase() || "?"

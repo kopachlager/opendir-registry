@@ -68,7 +68,7 @@ export function LandingDirectory() {
           />
         </div>
       </div>
-      <div className="flex gap-2 overflow-x-auto border-b px-5 py-3 md:px-6">
+      <div className="flex flex-wrap gap-2 border-b px-5 py-3 md:px-6">
         {categories.map((item) => (
           <Button
             key={item}
@@ -87,24 +87,34 @@ export function LandingDirectory() {
           </Button>
         ))}
       </div>
-      <div className="max-h-[620px] overflow-auto">
-        <Table>
+      <div className="max-h-[620px] overflow-x-hidden overflow-y-auto [&>div:first-child]:overflow-x-hidden">
+        <Table className="table-fixed">
           <TableHeader className="sticky top-0 z-10 bg-background">
             <TableRow className="hover:bg-transparent">
-              <TableHead className="pl-5 md:pl-6">Project</TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead className="hidden lg:table-cell">Tags</TableHead>
-              <TableHead>Submitted by</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="pr-5 text-right md:pr-6">Updated</TableHead>
+              <TableHead className="w-[68%] pl-5 sm:w-[48%] md:w-[38%] md:pl-6 lg:w-[30%] xl:w-[25%]">
+                Project
+              </TableHead>
+              <TableHead className="hidden w-[18%] md:table-cell lg:w-[15%]">
+                Category
+              </TableHead>
+              <TableHead className="hidden w-[18%] xl:table-cell">Tags</TableHead>
+              <TableHead className="hidden w-[18%] lg:table-cell">
+                Submitted by
+              </TableHead>
+              <TableHead className="w-[32%] sm:w-[24%] md:w-[18%] lg:w-[14%] xl:w-[12%]">
+                Status
+              </TableHead>
+              <TableHead className="hidden w-[16%] pr-5 text-right sm:table-cell md:w-[14%] md:pr-6 xl:w-[12%]">
+                Updated
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filtered.map((project) => (
               <TableRow key={project.id}>
-                <TableCell className="max-w-md py-3 pl-5 md:pl-6">
+                <TableCell className="min-w-0 py-3 pl-5 md:pl-6">
                   <div className="flex items-center gap-3">
-                    <div className="flex size-8 shrink-0 items-center justify-center rounded-md border bg-muted/40 text-xs font-semibold">
+                    <div className="hidden size-8 shrink-0 items-center justify-center rounded-md border bg-muted/40 text-xs font-semibold sm:flex">
                       {project.name.slice(0, 1)}
                     </div>
                     <div className="min-w-0">
@@ -115,10 +125,10 @@ export function LandingDirectory() {
                     </div>
                   </div>
                 </TableCell>
-                <TableCell className="py-3">
+                <TableCell className="hidden overflow-hidden py-3 md:table-cell">
                   <Badge variant="outline">{project.category}</Badge>
                 </TableCell>
-                <TableCell className="hidden py-3 lg:table-cell">
+                <TableCell className="hidden overflow-hidden py-3 xl:table-cell">
                   <div className="flex gap-1">
                     {project.tags.map((tag) => (
                       <Badge
@@ -131,8 +141,8 @@ export function LandingDirectory() {
                     ))}
                   </div>
                 </TableCell>
-                <TableCell className="py-3 font-mono text-xs text-muted-foreground">
-                  <span className="flex items-center gap-1.5">
+                <TableCell className="hidden overflow-hidden py-3 font-mono text-xs text-muted-foreground lg:table-cell">
+                  <span className="flex items-center gap-1.5 truncate">
                     <Bot className="size-3.5" />
                     {project.submittedBy}
                   </span>
@@ -151,7 +161,7 @@ export function LandingDirectory() {
                     {project.status}
                   </Badge>
                 </TableCell>
-                <TableCell className="whitespace-nowrap py-3 pr-5 text-right text-muted-foreground md:pr-6">
+                <TableCell className="hidden whitespace-nowrap py-3 pr-5 text-right text-muted-foreground sm:table-cell md:pr-6">
                   {project.updated}
                 </TableCell>
               </TableRow>

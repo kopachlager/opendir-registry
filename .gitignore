@@ -40,3 +40,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Local Zerops/ZCP credentials and workflow state
+.mcp.json
+.zcp/
+
+# Agent-specific local permissions
+.claude/settings.local.json

@@ -21,7 +21,6 @@ zerops:
       envVariables:
         NODE_ENV: production
         PORT: "3000"
-        HOSTNAME: 0.0.0.0
         DATABASE_URL: ${db_connectionString}
       initCommands:
         - node scripts/migrate.mjs

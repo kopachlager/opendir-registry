@@ -17,7 +17,7 @@ Agent or human
     Shared validation service
               │
               ▼
-       PostgreSQL on Zerops
+       PostgreSQL on Railway
               │
               ▼
    Review queue and directory
@@ -130,16 +130,16 @@ npm run db:migrate
 npm run dev
 ```
 
-## Deploying on Zerops
+## Deploying on Railway
 
-The repository contains two Zerops files:
+The repository contains a Docker-based Railway deployment configuration:
 
-- [`zerops-import.yaml`](zerops-import.yaml) provisions the Node.js application and PostgreSQL 18 service.
-- [`zerops.yaml`](zerops.yaml) builds the standalone Next.js application, runs migrations, starts the service, and configures its health check.
+- [`Dockerfile`](Dockerfile) builds the standalone Next.js application.
+- [`railway.json`](railway.json) runs migrations before each release, starts the service, and configures `/api/health` as its health check.
 
-Import `zerops-import.yaml` in Zerops or use zCLI. The app receives `DATABASE_URL` from the managed `db` service automatically.
+Create an application service from this GitHub repository and attach a managed PostgreSQL service. Configure `DATABASE_URL`, `PUBLIC_APP_URL`, `ADMIN_TOKEN`, and optionally `ADMIN_REVIEWER_NAME` on the application service. Keep `DATABASE_URL` and `ADMIN_TOKEN` in Railway's secret variable store.
 
-The deployed service publishes its assigned Zerops URL in `server.json` and in the well-known discovery manifest.
+The current hosted MCP endpoint is published in [`server.json`](server.json). Runtime links in the well-known discovery manifest derive from `PUBLIC_APP_URL`.
 
 ## Technology
 
@@ -147,7 +147,7 @@ The deployed service publishes its assigned Zerops URL in `server.json` and in t
 - ODSS JSON Schema and OpenAPI 3.1
 - Model Context Protocol TypeScript SDK
 - PostgreSQL using `postgres.js`
-- Zerops Node.js runtime and managed PostgreSQL
+- Railway container runtime and managed PostgreSQL
 - Tailwind CSS and shadcn-style primitives
 
 ## License

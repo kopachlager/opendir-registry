@@ -7,7 +7,7 @@
   "remotes": [
     {
       "type": "streamable-http",
-      "url": "https://app-2e62-3000.prg1.zerops.app/mcp"
+      "url": "https://app-production-807a.up.railway.app/mcp"
     }
   ]
 }

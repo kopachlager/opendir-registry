@@ -12,6 +12,11 @@ WORKDIR /app
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
 RUN npm run build
+RUN npx esbuild scripts/migrate.mjs \
+  --bundle \
+  --platform=node \
+  --format=esm \
+  --outfile=.next/migrate.bundle.mjs
 
 FROM node:22-alpine AS runner
 
@@ -27,8 +32,8 @@ RUN addgroup --system --gid 1001 nodejs \
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/.next/migrate.bundle.mjs ./.next/migrate.bundle.mjs
 COPY --from=builder --chown=nextjs:nodejs /app/db ./db
-COPY --from=builder --chown=nextjs:nodejs /app/scripts ./scripts
 
 USER nextjs
 
